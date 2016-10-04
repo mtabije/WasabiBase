@@ -58,51 +58,51 @@ module makeHex(shapeWidth, thickness)
         };
 };
 
-module sideAbilityClip(clipLength, clipWidth, clipAbilityThickness, clipBandThickness, clipAbilityWidth, clipLipWidth, clipLipThickness, clipAbility)
+
+//Original: sideAbilityClip(clipLength, clipWidth, clipAbilityThickness, clipBandThickness, clipAbilityWidth, clipLipWidth, clipLipThickness, clipAbility) 
+module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandThickness, clipSideWidth, clipLipWidth, clipLipThickness, clipAbility)
 {
     union()
     {
-        //Bottom Band
-       translate([-clipLength/2,-clipWidth/2,0])
-            cube([clipLength, clipWidth, clipBandThickness]);
        
-               
-        //Left Ability Clip
+       //Bottom Band
+       translate([-clipLength/2,-clipWidth/2,0])
+            cube([clipLength, clipWidth, clipBottomBandThickness]);
+                      
+        //Left Side of Clip
         translate([-clipLength/2,-clipWidth/2,0])
             union()
             {   
                 //Vertical Clip Piece
-                cube([clipAbilityWidth, clipWidth, clipAbilityThickness]);
+                cube([clipSideWidth, clipWidth, clipSideThickness]);
                         
                 //Clip Lip
-                translate([0, 0, clipAbilityThickness])
-                    cube([clipAbilityWidth+clipLipWidth, clipWidth, clipLipThickness]);
+                translate([0, 0, clipSideThickness])
+                    cube([clipSideWidth+clipLipWidth, clipWidth, clipLipThickness]);
             
                 //Ability Symbol
-                translate([clipAbilityWidth/2, clipWidth/2, clipAbilityThickness+clipLipThickness])
-                    abilitySymbol(clipAbilityWidth, 2, clipAbility);
+                translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipThickness])
+                    abilitySymbol(clipSideWidth, 2, clipAbility);
                 
             };
-                
-                
        
-        //Right Ability Clip
+        //Right Side Clip
         mirror([1,0,0])
         {
             translate([-clipLength/2,-clipWidth/2,0])
                 union()
                 {   
                     //Vertical Clip Piece
-                    cube([clipAbilityWidth, clipWidth, clipAbilityThickness]);
-                            
+                    cube([clipSideWidth, clipWidth, clipSideThickness]);
+
                     //Clip Lip
-                    translate([0, 0, clipAbilityThickness])
-                        cube([clipAbilityWidth+clipLipWidth, clipWidth, clipLipThickness]);
-                
+                    translate([0, 0, clipSideThickness])
+                        cube([clipSideWidth+clipLipWidth, clipWidth, clipLipThickness]);
+
                     //Ability Symbol
-                    translate([clipAbilityWidth/2, clipWidth/2, clipAbilityThickness+clipLipThickness])
-                        abilitySymbol(clipAbilityWidth, 2, clipAbility);
-                    
+                    translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipThickness])
+                        abilitySymbol(clipSideWidth, 2, clipAbility);
+
                 };
         };
             
