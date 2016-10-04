@@ -11,14 +11,17 @@ modelBaseSize = 38;
 modelBaseThickness = 3;
 
 // Size of the Base in mm (flat side to flat side).
-baseSize = 44;
+baseSize = 46;
 
 // Thickness of the Base in mm.
-baseThickness = 6;
+baseThickness = 7;
 
 
 
 //[Hidden]
+
+
+
 
 difference()
 {
@@ -29,9 +32,9 @@ difference()
     translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
     
     //Removing material for attribute clip
+    rotate([0,0,-30])
+        sideAttributeClip(baseSize, 10, baseThickness, 2, (baseSize-modelBaseSize+1)/2, 1);
 };
-    
-
 
 
 module makeHex(shapeWidth, thickness)
@@ -49,5 +52,24 @@ module makeHex(shapeWidth, thickness)
                 };
             };
         };
+};
+
+module sideAttributeClip(clipLength, clipWidth, clipAttributeThickness, clipBandThickness, clipAttributeWidth, clipAttribute)
+{
+    union()
+    {
+        //Bottom Band
+        translate([-clipLength/2,-clipWidth/2,0])
+            cube([clipLength,clipWidth,clipBandThickness]);
+       
+        //Left Attribute Clip
+        translate([-clipLength/2,-clipWidth/2,clipBandThickness])
+            cube([clipAttributeWidth,clipWidth,clipAttributeThickness]);
+       
+        //Right Attribute Clip
+        translate([clipLength/2-clipAttributeWidth,-clipWidth/2,clipBandThickness])
+            cube([clipAttributeWidth,clipWidth,clipAttributeThickness]);
+    };
+    
     
 };
