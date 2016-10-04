@@ -25,20 +25,20 @@ baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
 
 
 
-difference()
+/*difference()
 {
     //Base Shell
     makeHex(baseSize, baseThickness);
     
     //Model Base (removed from Base Shell)   
-    translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
+    translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness); */
     
     //Removing material for Ability clip
     rotate([0,0,-30])
         sideAbilityClip(baseSize, 10, baseThickness, 2, (baseSize-modelBaseSize+1)/2, 0.5, 1, baseClipAbility);
         
    
-};
+//};
 
 
 module makeHex(shapeWidth, thickness)
