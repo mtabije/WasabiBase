@@ -30,8 +30,6 @@ difference()
     
     //Removing material for attribute clip
 };
-    
-
 
 
 module makeHex(shapeWidth, thickness)
@@ -49,5 +47,23 @@ module makeHex(shapeWidth, thickness)
                 };
             };
         };
+};
+
+module sideAttributeClip(clipLength, clipWidth, clipAttributeThickness, clipBandThickness, clipAttributeWidth, clipAttribute)
+{
+    union()
+    {
+        //Bottom Band
+        cube([clipWidth,clipLength,clipBandThickness]);
+       
+        //Left Attribute Clip
+        translate([-clipLength/2,0,clipBandThickness])
+            cube([clipWidth,clipAttributeWidth,clipAttributeThickness]);
+       
+        //Right Attribute Clip
+        translate([clipLength/2-clipAttributeWidth,0,clipBandThickness])
+            cube([clipWidth,clipAttributeWidth,clipAttributeThickness]);
+    };
+    
     
 };
