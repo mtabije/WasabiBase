@@ -43,7 +43,7 @@ difference()
 
 module makeHex(shapeWidth, thickness)
 {
-    hexAngles = [ for (i = [0 : 60 : 330]) i ];
+    hexAngles = [ for (i = [0 : 60 : 300]) i ];
     
         linear_extrude(height = thickness)
         {
