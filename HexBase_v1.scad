@@ -22,12 +22,13 @@ baseThickness = 6;
 
 difference()
 {
-//ERROR using both shapes at a time does not render....
     //Base Shell
     makeHex(baseSize, baseThickness);
     
     //Model Base (removed from Base Shell)   
     translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
+    
+    //Removing material for attribute clip
 };
     
 
