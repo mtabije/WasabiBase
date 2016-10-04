@@ -20,14 +20,14 @@ baseThickness = 6;
 
 //[Hidden]
 
-union()
+difference()
 {
 //ERROR using both shapes at a time does not render....
     //Base Shell
     makeHex(baseSize, baseThickness);
     
     //Model Base (removed from Base Shell)   
-    translate([25,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
+    translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
 };
     
 
@@ -39,7 +39,7 @@ module makeHex(shapeWidth, thickness)
     
         linear_extrude(height = thickness)
         {
-            union()
+            hull()
             {
                 for(i = hexAngles)
                 {    
