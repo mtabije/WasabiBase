@@ -7,11 +7,46 @@
 // Size of the Model Base in mm (flat side to flat side).
 modelBaseSize = 38;
 
-//[Hidden]
-hexAngles = [ for (i = [0 : 60 : 330]) i ];
+// Thickness of the Model Base in mm.
+modelBaseThickness = 3;
 
-for(i = hexAngles)
-{    
-    rotate([0,0,i])
-        polygon([[-(modelBaseSize/sqrt(3))/2,-modelBaseSize/2],[0,0],[(modelBaseSize/sqrt(3))/2,-modelBaseSize/2]]);
+// Size of the Base in mm (flat side to flat side).
+baseSize = 44;
+
+// Thickness of the Base in mm.
+baseThickness = 6;
+
+
+
+//[Hidden]
+
+union()
+{
+//ERROR using both shapes at a time does not render....
+    //Base Shell
+    makeHex(baseSize, baseThickness);
+    
+    //Model Base (removed from Base Shell)   
+    translate([25,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
+};
+    
+
+
+
+module makeHex(shapeWidth, thickness)
+{
+    hexAngles = [ for (i = [0 : 60 : 330]) i ];
+    
+        linear_extrude(height = thickness)
+        {
+            union()
+            {
+                for(i = hexAngles)
+                {    
+                    rotate([0,0,i])
+                        polygon([[-(shapeWidth/sqrt(3))/2,-shapeWidth/2],[0,0],[(shapeWidth/sqrt(3))/2,-shapeWidth/2]]);
+                };
+            };
+        };
+    
 };
