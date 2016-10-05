@@ -20,8 +20,14 @@ baseThickness = 7;
 baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
 
 
-//[Hidden]
+//[Advanced]
 
+abilityClipWidth = 10;
+abilityClipBandThickness = 2;
+lipOverhang = 0.5;
+lipOverhangThickness = 1;
+clipTolerance = 0.25;
+symbolThickness = 1.5;
 
 
 
@@ -35,7 +41,7 @@ difference()
     
     //Removing material for Ability clip
     rotate([0,0,-30])
-        sideAbilityClip(baseSize, 10, baseThickness, 2, (baseSize-modelBaseSize+1)/2, 0.5, 1, baseClipAbility);
+        sideAbilityClip(baseSize, abilityClipWidth, baseThickness, clipBandThickness, (baseSize-modelBaseSize+1)/2, lipOverhang, lipOverhangThickness, baseClipAbility);
         
    
 };
@@ -82,7 +88,7 @@ module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandT
             
                 //Ability Symbol
                 translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipThickness])
-                    abilitySymbol(clipSideWidth, 2, clipAbility);
+                    abilitySymbol(clipSideWidth, symbolThickness, clipAbility);
                 
             };
        
