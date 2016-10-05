@@ -41,7 +41,7 @@ difference()
     
     //Removing material for Ability clip
     rotate([0,0,-30])
-        sideAbilityClip(baseSize, abilityClipWidth, baseThickness, clipBandThickness, (baseSize-modelBaseSize+1)/2, lipOverhang, lipOverhangThickness, baseClipAbility);
+        sideAbilityClip(baseSize, abilityClipWidth, baseThickness, abilityClipBandThickness, (baseSize-modelBaseSize+1)/2, lipOverhang, lipOverhangThickness, baseClipAbility);
         
    
 };
