@@ -4,17 +4,19 @@
 //  Designed by Brian Coley, Mike Warner, and Mark Tabije
 //  See Thingiverse.com for lisencing information.
 
+//Defaults based on Knight Model
+
 // Size of the Model Base in mm (flat side to flat side).
-modelBaseSize = 38;
+modelBaseSize = 31;
 
 // Thickness of the Model Base in mm.
-modelBaseThickness = 3;
+modelBaseThickness = 6.5;
 
-// Size of the Base in mm (flat side to flat side).
-baseSize = 46;
+// Size of the Base in mm (flat side to flat side; typically 8mm larger than modelBaseThickness).
+baseSize = 39;
 
-// Thickness of the Base in mm.
-baseThickness = 7;
+// Thickness of the Base in mm.  (typically modelBaseSize + Clip Band Thickness + 3mm)
+baseThickness = 11;
 
 // Ability for the Clip
 baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
@@ -23,7 +25,7 @@ baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
 //[Advanced]
 
 abilityClipWidth = 10;
-abilityClipBandThickness = 2;
+abilityClipBandThickness = 1.5;
 lipOverhang = 0.5;
 lipOverhangThickness = 1;
 clipTolerance = 0.25;
