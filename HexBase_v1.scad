@@ -15,7 +15,7 @@ modelBaseThickness = 5;
 // Size of the Base in mm (Width of the base flat side to flat side; typically 8mm larger than modelBaseThickness).
 baseSize = 38;
 
-// Thickness of the Base in mm.  (Typically modelBaseSize + Clip Band Thickness + 3mm)
+// Thickness of the Base in mm.  (Typically modelBaseSize + Clip Band Thickness + 3mm)  DEV/BUG: Consider changing to the thickness between base and band.
 baseThickness = 9.5;
 
 // Ability for the Clip
