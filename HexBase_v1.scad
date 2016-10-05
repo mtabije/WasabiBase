@@ -7,16 +7,16 @@
 //Defaults based on Knight Model
 
 // Size of the Model Base in mm (flat side to flat side).
-modelBaseSize = 31;
+modelBaseSize = 30;
 
 // Thickness of the Model Base in mm.
-modelBaseThickness = 6.5;
+modelBaseThickness = 5;
 
 // Size of the Base in mm (flat side to flat side; typically 8mm larger than modelBaseThickness).
-baseSize = 39;
+baseSize = 38;
 
 // Thickness of the Base in mm.  (typically modelBaseSize + Clip Band Thickness + 3mm)
-baseThickness = 11;
+baseThickness = 9.5;
 
 // Ability for the Clip
 baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
@@ -28,7 +28,7 @@ abilityClipWidth = 10;
 abilityClipBandThickness = 1.5;
 lipOverhang = 0.5;
 lipOverhangThickness = 1;
-clipTolerance = 0.25;
+clipTolerance = 0.5;
 symbolThickness = 1.5;
 
 
