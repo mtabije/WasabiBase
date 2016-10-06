@@ -22,7 +22,7 @@ baseThickness = 10;
 baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
 
 // Level for the base (Tipically 0 is Hero)
-// baseLevel = 5; //[0:5]
+baseLevel = 5; //[0:5]  //currently not implemented
 
 
 //[Advanced]
@@ -31,16 +31,16 @@ abilityClipWidth = 10;
 abilityClipBandThickness = 1.5;
 lipOverhang = 0.5;
 lipOverhangThickness = 1;
-lipOverhangTolerance = 0.25;  // Newly added tolerance not yet used in code
-clipTolerance = 0.25;
-symbolThickness = 1.5;
-levelNotchSize = 3;
+lipOverhangTolerance = 0.25;  //currently not implemented
+clipTolerance = 0.25;  //currently not implemented
+symbolThickness = 1.5;  
+levelNotchSize = 3;  //currently not implemented
 
 //[ Testing ]
 
-notchToTable = true; //[true,false]
-shapeOnSide = true; //[true,false]
-clipSidePrint = true; //[true,false]
+notchToTable = true; //[true,false]  //currently not implemented
+shapeOnSide = true; //[true,false]  //currently not implemented
+clipSidePrint = true; //[true,false]  //currently not implemented
 
 
 difference()
