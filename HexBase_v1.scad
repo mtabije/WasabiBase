@@ -40,6 +40,7 @@ levelNotchSize = 3;
 
 notchToTable = true; //[true,false]
 shapeOnSide = true; //[true,false]
+clipSidePrint = true; //[true,false]
 
 
 difference()
