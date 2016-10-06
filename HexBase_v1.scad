@@ -4,24 +4,36 @@
 //  Designed by Brian Coley, Mike Warner, and Mark Tabije
 //  See Thingiverse.com for lisencing information.
 
-// Size of the Model Base in mm (flat side to flat side).
-modelBaseSize = 38;
+//Defaults based on Knight Model
+
+// Width of the Model Base in mm (flat side to flat side).
+modelBaseSize = 30;
 
 // Thickness of the Model Base in mm.
-modelBaseThickness = 3;
+modelBaseThickness = 5;
 
-// Size of the Base in mm (flat side to flat side).
-baseSize = 46;
+// Size of the Base in mm (Width of the base flat side to flat side; typically 8mm larger than modelBaseThickness).
+baseSize = 38;
 
-// Thickness of the Base in mm.
-baseThickness = 7;
+// Thickness of the Base in mm.  (Typically modelBaseSize + Clip Band Thickness + 3mm)  DEV/BUG: Consider changing to the thickness between base and band.
+baseThickness = 9.5;
 
 // Ability for the Clip
 baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
 
+// Level for the base (Tipically 0 is Hero)
+// baseLevel = 5; //[0:5]
 
-//[Hidden]
 
+//[Advanced]
+
+abilityClipWidth = 10;
+abilityClipBandThickness = 1.5;
+lipOverhang = 0.5;
+lipOverhangThickness = 1;
+clipTolerance = 0.5;
+symbolThickness = 1.5;
+levelNotchSize = 3;
 
 
 
@@ -35,7 +47,7 @@ difference()
     
     //Removing material for Ability clip
     rotate([0,0,-30])
-        sideAbilityClip(baseSize, 10, baseThickness, 2, (baseSize-modelBaseSize+1)/2, 0.5, 1, baseClipAbility);
+        sideAbilityClip(baseSize, abilityClipWidth, baseThickness, abilityClipBandThickness, (baseSize-modelBaseSize+1)/2, lipOverhang, lipOverhangThickness, baseClipAbility);
         
    
 };
@@ -58,51 +70,51 @@ module makeHex(shapeWidth, thickness)
         };
 };
 
-module sideAbilityClip(clipLength, clipWidth, clipAbilityThickness, clipBandThickness, clipAbilityWidth, clipLipWidth, clipLipThickness, clipAbility)
+
+//Original: sideAbilityClip(clipLength, clipWidth, clipAbilityThickness, clipBandThickness, clipAbilityWidth, clipLipWidth, clipLipThickness, clipAbility) 
+module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandThickness, clipSideWidth, clipLipWidth, clipLipThickness, clipAbility)
 {
     union()
     {
-        //Bottom Band
-       translate([-clipLength/2,-clipWidth/2,0])
-            cube([clipLength, clipWidth, clipBandThickness]);
        
-               
-        //Left Ability Clip
+       //Bottom Band
+       translate([-clipLength/2,-clipWidth/2,0])
+            cube([clipLength, clipWidth, clipBottomBandThickness]);
+                      
+        //Left Side of Clip
         translate([-clipLength/2,-clipWidth/2,0])
             union()
             {   
                 //Vertical Clip Piece
-                cube([clipAbilityWidth, clipWidth, clipAbilityThickness]);
+                cube([clipSideWidth, clipWidth, clipSideThickness]);
                         
                 //Clip Lip
-                translate([0, 0, clipAbilityThickness])
-                    cube([clipAbilityWidth+clipLipWidth, clipWidth, clipLipThickness]);
+                translate([0, 0, clipSideThickness])
+                    cube([clipSideWidth+clipLipWidth, clipWidth, clipLipThickness]);
             
                 //Ability Symbol
-                translate([clipAbilityWidth/2, clipWidth/2, clipAbilityThickness+clipLipThickness])
-                    abilitySymbol(clipAbilityWidth, 2, clipAbility);
+                translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipThickness])
+                    abilitySymbol(clipSideWidth, symbolThickness, clipAbility);
                 
             };
-                
-                
        
-        //Right Ability Clip
+        //Right Side Clip
         mirror([1,0,0])
         {
             translate([-clipLength/2,-clipWidth/2,0])
                 union()
                 {   
                     //Vertical Clip Piece
-                    cube([clipAbilityWidth, clipWidth, clipAbilityThickness]);
-                            
+                    cube([clipSideWidth, clipWidth, clipSideThickness]);
+
                     //Clip Lip
-                    translate([0, 0, clipAbilityThickness])
-                        cube([clipAbilityWidth+clipLipWidth, clipWidth, clipLipThickness]);
-                
+                    translate([0, 0, clipSideThickness])
+                        cube([clipSideWidth+clipLipWidth, clipWidth, clipLipThickness]);
+
                     //Ability Symbol
-                    translate([clipAbilityWidth/2, clipWidth/2, clipAbilityThickness+clipLipThickness])
-                        abilitySymbol(clipAbilityWidth, 2, clipAbility);
-                    
+                    translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipThickness])
+                        abilitySymbol(clipSideWidth, 2, clipAbility);
+
                 };
         };
             
