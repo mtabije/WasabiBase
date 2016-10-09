@@ -6,6 +6,8 @@
 
 //Defaults based on Knight Model at x1.5
 
+//***** Variables *****
+
 //Parts to create (valid entries: "base_and_clip" , "base_only" , "clip_only" )
 partSelection = "base_and_clip"; //[base_and_clip: Base Plus Clip(s), base_only: Base Only, clip_only: Clip(s) Only]
 
@@ -33,11 +35,13 @@ baseLevel = 5; //[0:5]  //currently not implemented
 abilityClipWidth = 10;
 abilityClipBandThickness = 1.5;
 lipOverhang = 0.5;
-lipOverhangThickness = 1;
-lipOverhangTolerance = 0.25;
+lipOverhangThickness = .75;
+lipOverhangTolerance = 0.5;
 clipTolerance = 0.25;
 symbolThickness = 1.5;  
 levelNotchSize = 3;  //currently not implemented
+generateSupport = false; //currently not implemented
+supportContactWidth = 0.2; //currently not implemented
 
 //[ Testing ]
 
@@ -45,51 +49,23 @@ notchToTable = true; //[true,false]  //currently not implemented
 shapeOnSide = true; //[true,false]  //currently not implemented
 clipSidePrint = true; //[true,false]  //currently not implemented
 
+
+
+
 //****** Main ********
 
 if(partSelection == "base_and_clip")
 {
-    difference()
-    {
-        //Base Shell
-        makeHex(baseSize, baseThickness);
-        
-        //Model Base (removed from Base Shell)   
-        translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
-        
-        //Removing material for Ability clip
-        rotate([0,0,-30])
-            sideAbilityClip(baseSize, abilityClipWidth+clipTolerance*2, baseThickness, abilityClipBandThickness+clipTolerance, ((baseSize-modelBaseSize)+lipOverhang+clipTolerance)/2, lipOverhang, lipOverhangThickness, lipOverhangTolerance, baseClipAbility);
-        
-        
-    }
-
-    makeClips(baseClipAbility);
-    
-    echo("Base Plate Min Size = ", baseThickness-modelBaseThickness-clipTolerance-abilityClipBandThickness);
+    makeBase();
+    makeClips(baseClipAbility);     
 } 
 else if(partSelection == "base_only")
 {
-    difference()
-    {
-        //Base Shell
-        makeHex(baseSize, baseThickness);
-        
-        //Model Base (removed from Base Shell)   
-        translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
-        
-        //Removing material for Ability clip
-        rotate([0,0,-30])
-            sideAbilityClip(baseSize, abilityClipWidth+clipTolerance*2, baseThickness, abilityClipBandThickness+clipTolerance, ((baseSize-modelBaseSize)+lipOverhang+clipTolerance)/2, lipOverhang, lipOverhangThickness, lipOverhangTolerance, baseClipAbility);
-        
-        
-    }
-    echo("Base Plate Min Size = ", baseThickness-modelBaseThickness-clipTolerance-abilityClipBandThickness);
-    
+    makeBase();
 }
 else if(partSelection == "clip_only")
 {   
-     makeClips(baseClipAbility);
+    makeClips(baseClipAbility);
 }
 else
 {
@@ -97,25 +73,31 @@ else
 }
 
 
-//******* Modules *********
+//******* Main Modules *********
+//*******   Warning: These modules are dependant on variables in parent code   *********
+
+module makeBase()
+{
+    difference()
+    {
+        //Base Shell
+        makeHex(baseSize, baseThickness);
+        
+        //Model Base (removed from Base Shell)   
+        translate([0,0,(baseThickness-modelBaseThickness)])makeHex(modelBaseSize, modelBaseThickness);
+        
+        //Removing material for Ability clip
+        rotate([0,0,-30])
+            sideAbilityClip(baseSize, abilityClipWidth+clipTolerance*2, baseThickness, abilityClipBandThickness+clipTolerance, ((baseSize-modelBaseSize)+lipOverhang+clipTolerance)/2, lipOverhang, lipOverhangThickness, lipOverhangTolerance, baseClipAbility);
+        
+        
+    }
+    
+    echo("Base Plate Min Size = ", baseThickness-modelBaseThickness-clipTolerance-abilityClipBandThickness);
+}
+
 
   
-module makeHex(shapeWidth, thickness)
-{
-    hexAngles = [ for (i = [0 : 60 : 300]) i ];
-    
-        linear_extrude(height = thickness)
-        {
-            hull()
-            {
-                for(i = hexAngles)
-                {    
-                    rotate([0,0,i])
-                        polygon([[-(shapeWidth/sqrt(3))/2,-shapeWidth/2],[0,0],[(shapeWidth/sqrt(3))/2,-shapeWidth/2]]);
-                }
-            }
-        }
-}
 
 module makeClips(clipType)
 {
@@ -158,7 +140,32 @@ module makeClips(clipType)
         
 }
 
- 
+makeSupport(contactSize);
+{
+}
+
+
+//******* Aux Modules  *********
+
+module makeHex(shapeWidth, thickness)
+{
+    hexAngles = [ for (i = [0 : 60 : 300]) i ];
+    
+        linear_extrude(height = thickness)
+        {
+            hull()
+            {
+                for(i = hexAngles)
+                {    
+                    rotate([0,0,i])
+                        polygon([[-(shapeWidth/sqrt(3))/2,-shapeWidth/2],[0,0],[(shapeWidth/sqrt(3))/2,-shapeWidth/2]]);
+                }
+            }
+        }
+}
+
+
+
 module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandThickness, clipSideWidth, clipLipWidth, clipLipThickness, clipLipTolerance, clipAbility)
 {
     union()
@@ -170,19 +177,27 @@ module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandT
                       
         //Left Side of Clip
         translate([-clipLength/2,-clipWidth/2,0])
-            union()
-            {   
-                //Vertical Clip Piece
-                cube([clipSideWidth, clipWidth, clipSideThickness+clipLipTolerance]);
-                        
-                //Clip Lip
-                translate([0, 0, clipSideThickness+clipLipTolerance])
-                    cube([clipSideWidth+clipLipWidth, clipWidth, clipLipThickness]);
             
-                //Ability Symbol
-                translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipTolerance+clipLipThickness])
-                    abilitySymbol(clipSideWidth, symbolThickness, clipAbility);
+            union()
+            {
+                union()
+                {   
+                    //Vertical Clip Piece
+                    cube([clipSideWidth, clipWidth, clipSideThickness+clipLipTolerance]);
+                            
+                    //Clip Lip
+                    translate([0, 0, clipSideThickness+clipLipTolerance])
+                        cube([clipSideWidth+clipLipWidth, clipWidth, clipLipThickness]);
                 
+                    //Ability Symbol
+                    translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipTolerance+clipLipThickness])
+                        abilitySymbol(clipSideWidth, symbolThickness, clipAbility);  
+                }
+                    //Side Ability Symbol - Removes material
+                  
+                translate([clipSideWidth/2, clipWidth/2, clipSideThickness+clipLipTolerance+clipLipThickness])
+                    rotate([0,-90,0])  
+                        abilitySymbol(clipSideWidth, symbolThickness, clipAbility);
             }
        
         //Right Side Clip
