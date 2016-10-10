@@ -24,7 +24,7 @@ baseSize = 38;
 baseThickness = 10;
 
 // Ability for the Clip ("All" creates all 3 clips)
-baseClipAbility = "Range";  //[Range, Direct, Sneak, All]
+baseClipAbility = "All";  //[Range, Direct, Sneak, All]
 
 // Level for the base (Tipically 0 is Hero)
 baseLevel = 5; //[0:5]  //currently not implemented
@@ -39,7 +39,9 @@ lipOverhangThickness = .7;
 lipOverhangTolerance = 0.5;
 clipTolerance = 0.25;
 symbolThickness = 1.5;  
-levelNotchSize = 3;  //currently not implemented
+//levelNotchSize = 3;  //currently not implemented
+levelNotchWidth = 3;
+levelNotchDepth = 3;
 generateSupport = false; //currently not implemented
 supportContactWidth = 0.2; //currently not implemented
 
@@ -56,12 +58,20 @@ clipSidePrint = true; //[true,false]  //currently not implemented
 
 if(partSelection == "base_and_clip")
 {
-    makeBase();
-    makeClips(baseClipAbility);     
+    difference()
+    {
+        makeBase();
+        buenasNotches(levelNotchWidth, levelNotchDepth, baseLevel);
+    }
+    makeClips(baseClipAbility);    
 } 
 else if(partSelection == "base_only")
 {
-    makeBase();
+    difference()
+    {
+        makeBase();
+        buenasNotches(levelNotchWidth, levelNotchDepth, baseLevel);
+    }
 }
 else if(partSelection == "clip_only")
 {   
@@ -145,12 +155,78 @@ module makeClips(clipType)
         
 }
 
+module buenasNotches(notchWidth, notchDepth, notchNumber)
+{
+    //DEV/DEBUG - This is a very rudimentary version of this code.  This needs to be expanded to be more
+    //                 parametrically flexible. Resizing may not work properly.  Notches are square for now.
+    
+    if(notchNumber >= 1)
+    { 
+        rotate([0,0,30])
+            translate([0,3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);
+       
+        rotate([0,0,210])
+           translate([0,3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);       
+    }
+    
+    if(notchNumber >= 2)
+    {
+       rotate([0,0,30])
+            translate([0,-3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);
+       
+        rotate([0,0,210])
+           translate([0,-3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);        
+    }
+   
+    if(notchNumber >= 3)
+    {
+        rotate([0,0,60])
+            translate([-notchDepth,0,0])  //Make this Parametric  --  Work on this algorythm the most
+                buenasNotchesPieces(baseSize, notchDepth+.75, notchWidth, baseThickness);
+       
+        rotate([0,0,240])
+           translate([-notchDepth,0,0])  //Make this Parametric  --  Work on this algorythm the most
+                buenasNotchesPieces(baseSize, notchDepth+.75, notchWidth, baseThickness);  
+        
+    }
+     
+   
+    if(notchNumber >= 4)
+    { 
+        rotate([0,0,90])
+            translate([0,3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);
+       
+       rotate([0,0,270])
+           translate([0,3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);       
+    }
+    
+    if(notchNumber >= 5)
+    {
+       rotate([0,0,90])
+            translate([0,-3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);
+       
+        rotate([0,0,270])
+           translate([0,-3,0])  //Make this Parametric
+                buenasNotchesPieces(baseSize, notchDepth, notchWidth, baseThickness);        
+    }
+    
+}
+
 module makeSupport(contactSize)
 {
+    //Not Yet Implemented
+    
 }
 
 
-//******* Aux Modules  *********
+//******* Aux Modules  (not dependant on external variables i.e. stand-alone)  *********
 
 module makeHex(shapeWidth, thickness)
 {
@@ -168,7 +244,6 @@ module makeHex(shapeWidth, thickness)
             }
         }
 }
-
 
 
 module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandThickness, clipSideWidth, clipLipWidth, clipLipThickness, clipLipTolerance, clipShape, shapeOnSide)
@@ -194,7 +269,7 @@ module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandT
         {
             if(shapeOnSide == false)
             {
-                   union()
+                union()
                 {   
                     //Vertical Clip Piece
                     cube([clipSideWidth, clipWidth, clipSideThickness+clipLipTolerance]);
@@ -228,9 +303,9 @@ module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandT
                     }
                         //Side Ability Symbol - Removes material
                       
-                    translate([symbolThickness/2, clipWidth/2, clipBottomBandThickness+clipSideWidth/2])
+                    translate([symbolThickness/2, clipWidth/2, clipSideThickness/2])
                         rotate([0,-90,0])  
-                            abilitySymbol(clipWidth, symbolThickness, clipShape);
+                            abilitySymbol(clipWidth/2, symbolThickness, clipShape);
                 }
             }
         }
@@ -276,9 +351,9 @@ module sideAbilityClip(clipLength, clipWidth, clipSideThickness, clipBottomBandT
                         }
                             //Side Ability Symbol - Removes material
                           
-                        translate([symbolThickness/2, clipWidth/2, clipBottomBandThickness+clipSideWidth/2])
+                        translate([symbolThickness/2, clipWidth/2, clipSideThickness/2])
                             rotate([0,-90,0])  
-                                abilitySymbol(clipWidth, symbolThickness, clipShape);
+                                abilitySymbol(clipWidth/2, symbolThickness, clipShape);
                     }
                 }
             }
@@ -310,10 +385,23 @@ module abilitySymbol(abilitySize, abilityThickness, ability)
     if(ability == "Sneak")
        cylinder(h=abilityThickness,r=abilitySize/2);
     
-    
+  
+       
 }
 
-module notchTemplate(numOfNotches)
+module buenasNotchesPieces(baseLength, notchWidth, notchLength, notchThickness)
 {
+    //Vertical notch Pieces
+   
+    //Left Notch
+    translate([-baseLength/2,-notchLength/2,0])
+        cube([notchWidth, notchLength, notchThickness]);
+    
+    //Right Notch - Not Necessary cannot make notches to cross over center.
+    //mirror([1,0,0])
+    //    translate([-baseLength/2,-notchLength/2,0])
+     //       cube([notchWidth, notchLength, notchThickness]);
 }
+
+
 
